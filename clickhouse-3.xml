@@ -1,0 +1,9 @@
+<clickhouse>
+    <macros>
+        <shard>01</shard>
+        <replica>clickhouse-3</replica>
+    </macros>
+    <keeper_server>
+        <server_id>3</server_id>
+    </keeper_server>
+</clickhouse>

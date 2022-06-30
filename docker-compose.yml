@@ -1,0 +1,38 @@
+version: "3.6"
+
+services:
+
+  clickhouse-1:
+    image: clickhouse/clickhouse-server:22.6.2.12
+    hostname: clickhouse-1
+    volumes:
+      - clickhouse-test-1-data:/var/lib/clickhouse
+      - ./clickhouse-1.xml:/etc/clickhouse-server/config.d/config.xml
+      - ./clickhouse.xml:/etc/clickhouse-server/config.d/config.node.xml
+      - ./clickhouse-users.xml:/etc/clickhouse-server/users.d/config.xml
+    ports:
+      - "9000:9000"
+      - "8123:8123"
+
+  clickhouse-2:
+    image: clickhouse/clickhouse-server:22.6.2.12
+    hostname: clickhouse-2
+    volumes:
+      - clickhouse-test-2-data:/var/lib/clickhouse
+      - ./clickhouse-2.xml:/etc/clickhouse-server/config.d/config.xml
+      - ./clickhouse.xml:/etc/clickhouse-server/config.d/config.node.xml
+      - ./clickhouse-users.xml:/etc/clickhouse-server/users.d/config.xml
+
+  clickhouse-3:
+    image: clickhouse/clickhouse-server:22.6.2.12
+    hostname: clickhouse-3
+    volumes:
+      - clickhouse-test-3-data:/var/lib/clickhouse
+      - ./clickhouse-3.xml:/etc/clickhouse-server/config.d/config.xml
+      - ./clickhouse.xml:/etc/clickhouse-server/config.d/config.node.xml
+      - ./clickhouse-users.xml:/etc/clickhouse-server/users.d/config.xml
+
+volumes:
+  clickhouse-test-1-data:
+  clickhouse-test-2-data:
+  clickhouse-test-3-data:

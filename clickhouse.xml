@@ -1,0 +1,75 @@
+<clickhouse>
+    <!-- general server config -->
+    <timezone>Etc/UTC</timezone>
+    <logger>
+        <level>error</level>
+        <console>1</console>
+    </logger>
+
+    <!-- cluster config -->
+    <macros>
+        <cluster>testcluster</cluster>
+    </macros>
+
+    <default_replica_path>/clickhouse/tables/{uuid}/{shard}</default_replica_path>
+    <default_replica_name>{replica}</default_replica_name>
+
+    <remote_servers replace="replace">
+        <testcluster>
+            <shard>
+                <replica>
+                    <host>clickhouse-1</host>
+                    <port>9000</port>
+                </replica>
+                <replica>
+                    <host>clickhouse-2</host>
+                    <port>9000</port>
+                </replica>
+                <replica>
+                    <host>clickhouse-3</host>
+                    <port>9000</port>
+                </replica>
+            </shard>
+        </testcluster>
+    </remote_servers>
+
+    <!-- use built-in clickhouse-keeper on each node -->
+    <zookeeper>
+        <node>
+            <host>localhost</host>
+            <port>2181</port>
+        </node>
+    </zookeeper>
+
+    <!-- clickhouse-keeper -->
+    <keeper_server>
+        <!-- server_id is set in each server config -->
+        <tcp_port>2181</tcp_port>
+        <log_storage_path>/var/lib/clickhouse/coordination/log</log_storage_path>
+        <snapshot_storage_path>/var/lib/clickhouse/coordination/snapshots</snapshot_storage_path>
+    
+        <coordination_settings>
+            <operation_timeout_ms>10000</operation_timeout_ms>
+            <session_timeout_ms>30000</session_timeout_ms>
+            <raft_logs_level>error</raft_logs_level>
+        </coordination_settings>
+    
+        <raft_configuration>
+            <server>
+                <id>1</id>
+                <hostname>clickhouse-1</hostname>
+                <port>9444</port>
+            </server>
+            <server>
+                <id>2</id>
+                <hostname>clickhouse-2</hostname>
+                <port>9444</port>
+            </server>
+            <server>
+                <id>3</id>
+                <hostname>clickhouse-3</hostname>
+                <port>9444</port>
+            </server>
+        </raft_configuration>
+    </keeper_server>
+</clickhouse>
